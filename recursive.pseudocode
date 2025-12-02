@@ -1,0 +1,8 @@
+Procedure Hanoi (n, A, C, B)
+ Begin
+ If (n<>0) then
+ Hanoi (n-1, A, B, C);
+ Move(A,C);
+ Hanoi (n-1, B, C, A);
+ EndIf;
+ End
