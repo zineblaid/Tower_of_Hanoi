@@ -1,16 +1,12 @@
 #include <iostream>
-#include <chrono>
 using namespace std;
-using namespace std::chrono;
 
-void hanoiRecursive(int n, char source, char target, char auxiliary) {
-    if (n == 1) {
-        cout << "Move disk 1 from " << source << " to " << target << endl;
-        return;
+void Hanoi(int n, char A, char C, char B) {
+    if (n != 0) {
+        Hanoi(n - 1, A, B, C);   // Déplacer n-1 de A → B en utilisant C
+        cout << "Move(" << A << "," << C << ");" << endl; // Déplacer le dernier disque
+        Hanoi(n - 1, B, C, A);   // Déplacer n-1 de B → C en utilisant A
     }
-    hanoiRecursive(n - 1, source, auxiliary, target);
-    cout << "Move disk " << n << " from " << source << " to " << target << endl;
-    hanoiRecursive(n - 1, auxiliary, target, source);
 }
 
 int main() {
@@ -18,13 +14,7 @@ int main() {
     cout << "Enter number of disks: ";
     cin >> n;
 
-    auto start = high_resolution_clock::now();
-    hanoiRecursive(n, 'A', 'C', 'B');
-    auto end = high_resolution_clock::now();
-    
-    auto duration = duration_cast<milliseconds>(end - start);
-    cout << "Execution time: " << duration.count() << " milliseconds" << endl;
-    
+    Hanoi(n, 'A', 'C', 'B'); // Respect exact des paramètres du cours
+
     return 0;
 }
-
