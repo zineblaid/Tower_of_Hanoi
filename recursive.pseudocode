@@ -1,7 +1,7 @@
 Procedure Hanoi (n, A, C, B)
  Begin
 // Base case: if there are no disks to move, do nothing
- If (n<>0) then
+ If (n<>0) then;
  // Step 1: Move n-1 disks from Source to Auxiliary using Destination as temporary storage
  Hanoi (n-1, A, B, C);
   // Step 2: Move the largest disk from Source to Destination
