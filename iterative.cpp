@@ -3,13 +3,14 @@
 #include <chrono>
 using namespace std;
 using namespace std::chrono;
+//pour représenter un mouvement d'un disque
 
 struct Move {
     int disk;
     char from;
     char to;
 };
-
+//  résoudre le Tower of Hanoi itertive e
 void hanoiIterative(int n) {
     stack<Move> moves;
     int totalMoves = (1 << n) - 1; // 2^n - 1
@@ -32,6 +33,7 @@ int main() {
     auto start = high_resolution_clock::now();
     hanoiIterative(n);
     auto end = high_resolution_clock::now();
+    //la durée en millisecondes
     
     auto duration = duration_cast<milliseconds>(end - start);
     cout << "Execution time: " << duration.count() << " milliseconds" << endl;
