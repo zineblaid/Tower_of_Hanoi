@@ -1,91 +1,90 @@
-Procedure IterativeHanoi(n, S, A, D)
-Begin
-    // Calculate total number of moves required: 2^n - 1
-    totalMoves = 2^n - 1
+Procedure IterativeHanoi(n, S, A, D);
+var temp, m, t;
+Begin;
+    // Calculate total number of moves required 2^n - 1;
+    totalMoves <-- 2^n - 1;
 
-    // If number of disks is even, swap auxiliary and destination pegs
-    // This ensures the correct sequence of moves for even n
-    If n mod 2 = 0 then
-        temp = D
-        D = A
-        A = temp
-    EndIf
+    // If number of disks is even donc on swap auxiliary and destination pegs;
+    If n mod 2 <-- 0 then;
+        temp <-- D;
+        D <-- A;
+        A <-- temp;
+    EndIf;
 
-    // Initialize peg stacks
-    // S_stack starts with all disks (largest at bottom, smallest on top)
-    S_stack[1..n] = n..1     // top of stack at index 1
-    S_top = 1                // points to the current top disk
-    A_stack[1..n] = empty    // auxiliary peg starts empty
-    A_top = 0
-    D_stack[1..n] = empty    // destination peg starts empty
-    D_top = 0
+    // Initialize stacks;
+    // S_stack starts with all disks (largest at bottom, smallest on top);
+    S: stack of disks;      // top of stack at index 1;
+    S.top <-- 1;
+    A: STACK;   
+    A.top <-- 0;
+    D: stack;    
+    D.top <-- 0;
 
-    // Loop through each move from 1 to totalMoves
-    For moveNumber = 1 to totalMoves
+    // Loop through each move from 1 to totalMoves;
+    For m <-- 1 to totalMoves;
+        // Move between Source (S_stack) and Destination (D_stack);
+        If m mod 3 <-- 1 then;
+            If S.top <-- 0 then;
+                // Source is empty, move disk from Destination to Source;
+                D.top <-- D.top - 1;
+                S.top <-- S.top + 1;
+                S[S.top] <-- D[D.top + 1];
+            ElseIf D.top <-- 0 then;
+                // Destination is empty, move disk from Source to Destination;
+                S.top <-- S.top - 1;
+                D.top <-- D.top + 1;
+                D[D.top] <-- S[S.top + 1];
+            ElseIf S[S.top] < D[D.top] then;
+                // Top disk on Source is smaller, move it to Destination;
+                S.top <-- S.top - 1;
+                D.top <-- D.top + 1;
+                D[D.top] <-- S[S.top + 1];
+            Else;
+                // Top disk on Destination is smaller, move it to Source;
+                D.top <-- D.top - 1;
+                S.top <-- S.top + 1;
+                S[S.top] <-- D[D.top + 1];
+            EndIf;
+        
+        // Move between Source (S_stack) and Auxiliary (A_stack);
+        ElseIf m mod 3 <-- 2 then;
+            If S.top <-- 0 then;
+                A.top <-- A.top - 1;
+                S.top <-- S.top + 1;
+                S[S.top] <-- A[A.top + 1];
+            ElseIf A.top <-- 0 then;
+                S.top <-- S.top - 1;
+                A.top <-- A.top + 1;
+                A[A.top] <-- S[S.top + 1];
+            ElseIf S[S.top] < A[A.top] then;
+                S.top <-- S.top - 1;
+                A.top <-- A.top + 1;
+                A[A.top] <-- S[S.top + 1];
+            Else;
+                A.top <-- A.top - 1;
+                S.top <-- S.top + 1;
+                S[S.top] <-- A[A.top + 1];
+            EndIf;
 
-        // Move between Source (S_stack) and Destination (D_stack)
-        If moveNumber mod 3 = 1 then
-            If S_top = 0 then
-                // Source is empty, move disk from Destination to Source
-                D_top = D_top - 1
-                S_top = S_top + 1
-                S_stack[S_top] = D_stack[D_top + 1]
-            ElseIf D_top = 0 then
-                // Destination is empty, move disk from Source to Destination
-                S_top = S_top - 1
-                D_top = D_top + 1
-                D_stack[D_top] = S_stack[S_top + 1]
-            ElseIf S_stack[S_top] < D_stack[D_top] then
-                // Top disk on Source is smaller, move it to Destination
-                S_top = S_top - 1
-                D_top = D_top + 1
-                D_stack[D_top] = S_stack[S_top + 1]
-            Else
-                // Top disk on Destination is smaller, move it to Source
-                D_top = D_top - 1
-                S_top = S_top + 1
-                S_stack[S_top] = D_stack[D_top + 1]
-            EndIf
-
-        // Move between Source (S_stack) and Auxiliary (A_stack)
-        ElseIf moveNumber mod 3 = 2 then
-            If S_top = 0 then
-                A_top = A_top - 1
-                S_top = S_top + 1
-                S_stack[S_top] = A_stack[A_top + 1]
-            ElseIf A_top = 0 then
-                S_top = S_top - 1
-                A_top = A_top + 1
-                A_stack[A_top] = S_stack[S_top + 1]
-            ElseIf S_stack[S_top] < A_stack[A_top] then
-                S_top = S_top - 1
-                A_top = A_top + 1
-                A_stack[A_top] = S_stack[S_top + 1]
-            Else
-                A_top = A_top - 1
-                S_top = S_top + 1
-                S_stack[S_top] = A_stack[A_top + 1]
-            EndIf
-
-        // Move between Auxiliary (A_stack) and Destination (D_stack)
-        Else
-            If A_top = 0 then
-                D_top = D_top - 1
-                A_top = A_top + 1
-                A_stack[A_top] = D_stack[D_top + 1]
-            ElseIf D_top = 0 then
-                A_top = A_top - 1
-                D_top = D_top + 1
-                D_stack[D_top] = A_stack[A_top + 1]
-            ElseIf A_stack[A_top] < D_stack[D_top] then
-                A_top = A_top - 1
-                D_top = D_top + 1
-                D_stack[D_top] = A_stack[A_top + 1]
-            Else
-                D_top = D_top - 1
-                A_top = A_top + 1
-                A_stack[A_top] = D_stack[D_top + 1]
-            EndIf
-        EndIf
-    EndFor
-EndProcedure
+        // Move between Auxiliary (A_stack) and Destination (D_stack);
+        Else;
+            If A.top <-- 0 then;
+                D.top <-- D.top - 1;
+                A.top <-- A.top + 1;
+                A[A.top] <-- D[D.top + 1];
+            ElseIf D.top <-- 0 then;
+                A.top <-- A.top - 1;
+                D.top <-- D.top + 1;
+                D[D.top] <-- A[A.top + 1];
+            ElseIf A[A.top] < D[D.top] then;
+                A.top <-- A.top - 1;
+                D.top <-- D.top + 1;
+                D[D.top] <-- A[A.top + 1];
+            Else;
+                D.top <-- D.top - 1;
+                A.top <-- A.top + 1;
+                A[A.top] <-- D[D.top + 1];
+            EndIf;
+        EndIf;
+    EndFor;
+End;
