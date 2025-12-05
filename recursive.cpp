@@ -1,13 +1,13 @@
 #include <iostream>
 using namespace std;
-// Recursive function to solve Tower of Hanoi
+// recursive function to solve Tower of Hanoi
 // n: number of disks
 // A: source peg
 // C: destination peg
 // B: auxiliary peg
 
 void Hanoi(int n, char A, char C, char B) {
-    if (n != 0) { // Base case: if there are no disks, do nothing
+    if (n != 0) { // Base case: if there are no disks do nothing
            // Step 1: Move n-1 disks from Source (A) to Auxiliary (B) using Destination (C)
         Hanoi(n - 1, A, B, C);   // Déplacer n-1 de A → B en utilisant C
          // Step 2: Move the largest disk from Source (A) to Destination (C)
