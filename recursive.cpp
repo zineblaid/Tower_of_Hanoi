@@ -1,31 +1,30 @@
 #include <iostream>
+#include <chrono>
 using namespace std;
-// recursive function to solve Tower of Hanoi
-// n: number of disks
-// A: source peg
-// C: destination peg
-// B: auxiliary peg
+using namespace std::chrono;
 
-void Hanoi(int n, char A, char C, char B) {
-    if (n != 0) { // Base case: if there are no disks do nothing
-           // Step 1: Move n-1 disks from Source (A) to Auxiliary (B) using Destination (C)
-        Hanoi(n - 1, A, B, C);   // Déplacer n-1 de A → B en utilisant C
-         // Step 2: Move the largest disk from Source (A) to Destination (C)
-        cout << "Move(" << A << "," << C << ");" << endl; // Déplacer le dernier disque
-         // Step 3: Move the n-1 disks from Auxiliary (B) to Destination (C) using Source (A)
-        Hanoi(n - 1, B, C, A);   // Déplacer n-1 de B → C en utilisant A
+void hanoiRecursive(int n, char source, char target, char auxiliary) {
+    if (n == 1) {
+        cout << "Move disk 1 from " << source << " to " << target << endl;
+        return;
     }
+    hanoiRecursive(n - 1, source, auxiliary, target);
+    cout << "Move disk " << n << " from " << source << " to " << target << endl;
+    hanoiRecursive(n - 1, auxiliary, target, source);
 }
 
 int main() {
     int n;
-      // Ask the user how many disks to solve for
     cout << "Enter number of disks: ";
     cin >> n;
-      // Call the recursive Hanoi function
-    // This will print all the moves to solve the puzzle
 
-    Hanoi(n, 'A', 'C', 'B'); // Respect exact des paramètres du cours
-
+    auto start = high_resolution_clock::now();
+    hanoiRecursive(n, 'A', 'C', 'B');
+    auto end = high_resolution_clock::now();
+    
+    auto duration = duration_cast<milliseconds>(end - start);
+    cout << "Execution time: " << duration.count() << " milliseconds" << endl;
+    
     return 0;
 }
+
